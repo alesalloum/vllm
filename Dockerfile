@@ -68,17 +68,18 @@ FROM vllm-base AS vllm
 COPY --from=build /workspace/vllm/*.so /workspace/vllm/
 COPY vllm vllm
 
-EXPOSE 8000
+EXPOSE 7860
 ENTRYPOINT ["python3", "-m", "vllm.entrypoints.api_server"]
 
 # openai api server alternative
-FROM vllm-base AS vllm-openai
+#We dont need this
+#FROM vllm-base AS vllm-openai
 # install additional dependencies for openai api server
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install accelerate fschat
+#RUN --mount=type=cache,target=/root/.cache/pip \
+#    pip install accelerate fschat
 
-COPY --from=build /workspace/vllm/*.so /workspace/vllm/
-COPY vllm vllm
+#COPY --from=build /workspace/vllm/*.so /workspace/vllm/
+#COPY vllm vllm
 
-ENTRYPOINT ["python3", "-m", "vllm.entrypoints.openai.api_server"]
+#ENTRYPOINT ["python3", "-m", "vllm.entrypoints.openai.api_server"]
 
